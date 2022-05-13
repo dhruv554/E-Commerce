@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+	<title>Eshop Products</title>
+
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" th:href="@{/css/slick.css}" />
+	<link type="text/css" rel="stylesheet" th:href="@{/css/slick-theme.css}" />
+
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" th:href="@{/css/nouislider.min.css}" />
+
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" th:href="@{/css/style.css}" />
+
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+</head>
+
+<body>
+
+		<!-- header -->
+		<div id="header">
+			<div class="container">
+				<div class="pull-left">
+					<!-- Logo -->
+					<div class="header-logo" style="padding-left: 500px">
+						<a class="logo" href="/eshop/products">
+							<img th:src="@{/img/logo.png}" alt="">
+						</a>
+					</div>
+					<!-- /Logo -->
+				</div>
+			</div>
+		</div>
+		<!-- header -->
+	
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				
+                <!-- ASIDE -->
+				<div id="aside" class="col-md-3">
+					<!-- aside widget -->
+					<div class="aside">
+                        <!-- Search -->
+						<h3 class="aside-title">Search Product</h3>
+						<div class="header-search">
+                            <form th:action="@{/eshop/products}" method="get">
+                                <input class="input" name="name_id" type="text" placeholder="Full Product Name or Id">
+                                <button class="search-btn main-btn"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                        <!-- /Search -->
+					</div>
+					<!-- /aside widget -->
+
+					<!-- aside widget -->
+					<div class="aside">
+						<h3 class="aside-title">Sort By</h3>
+						<!--sort-->
+                            <div class="sort-filter">
+								<select class="input" name="sortproperty" onchange="location=this.value">
+                                        <option>Select</option>
+										<option value="?sortproperty=productname">Name A-Z</option>
+										<option value="?sortproperty=price">Price Low-High</option>
+									</select>
+							</div>
+                        <!--/sort-->
+					</div>
+					<!-- aside widget -->
+
+                        <!-- aside widget -->
+                    <div class="aside">
+						<h3 class="aside-title">Page filter</h3>
+                            <div class="page-filter">
+								<span class="text-uppercase"style="font-weight: bold">Show:</span>
+								<select class="input" name="pagesize" onchange="location=this.value">
+										<option>Select</option>
+										<option value="?pagesize=8">7</option>
+										<option value="?pagesize=10">10</option>
+									</select>
+							</div>
+                    </div>
+                    <!-- /aside widget -->
+                    
+                    <!-- aside widget -->
+                   
+                        <div class="aside">
+                            <h3 class="aside-title">Categories</h3>
+                            <a href="/eshop/categorylist">
+                                <button class="main-btn">View Categories</button>
+                            </a>
+                        </div>
+                    
+				        <!-- /aside widget -->
+				</div>
+				<!-- /ASIDE -->
+
+				<!-- MAIN -->
+				<div id="main" class="col-md-9">
+					<!-- store top filter -->
+					<div class="store-filter clearfix">
+						<div class="pull-right">
+                            <a href="/eshop/product/add"><button class="main-btn">Add new Product</button></a>
+						</div>
+					</div>
+					<!-- /store top filter -->
+
+				<!-- Products -->
+						<h2 class="">Product List</h2>
+						<table class="table table-bordered text-center">
+							<thead>
+							<tr>
+								<th scope="col"><div class="text-center">Product Id</div></th>
+								<th scope="col"><div class="text-center">Product Name</div></th>
+								<th scope="col"><div class="text-center">Price(€)</div></th>
+								<th scope="col"><div class="text-center">View more</div></th>
+							</tr>
+							</thead>
+							<tbody>
+
+							<div>
+								<tr th:each="product : ${products}">
+									<td th:text="${product.productid}"></td>
+									<td th:text="${product.productname}"></td>
+									<td th:text="${product.price}"></td>
+									<td><a th:href="@{/eshop/product/{id}(id=${product.productid})}" class="btn btn-primary m-2">View Details</a></td>
+								</tr>
+							</div>
+							</tbody>
+						</table>
+					<!-- Products -->
+
+
+					<!-- store bottom filter Pages -->
+                        <div class="store-filter clearfix">
+                                <ul class="nav nav-pills">
+                                    <li th:if="${currentPage - 1 >=0}" class="pull-left">
+										<a th:href="@{/eshop/products/(page=${currentPage - 1})}" class="btn btn-success">⇽ Previous Page</a>
+                                    </li>
+                                    <li th:if="${products.size()>0}" class="pull-right">
+                                        <a th:href="@{/eshop/products/(page=${currentPage + 1})}" class="btn btn-success">Next Page ⇾</a>
+                                    </li>
+                                </ul>
+                        </div>
+                        <!-- /store bottom filter -->
+
+				</div>
+				<!-- /MAIN -->
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
+    
+    
+	<!-- FOOTER -->
+	<footer id="footer" class="section section-grey">
+		<!-- container -->
+		<div class="container">
+			<hr>
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2 text-center">
+					<!-- footer copyright -->
+					<div class="footer-copyright">
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</div>
+					<!-- /footer copyright -->
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</footer>
+	<!-- /FOOTER -->
+
+	<!-- jQuery Plugins -->
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/slick.min.js"></script>
+	<script src="/js/nouislider.min.js"></script>
+	<script src="/js/jquery.zoom.min.js"></script>
+	<script src="/js/main.js"></script>
+    
+</body>
+
+</html>
